@@ -1,0 +1,41 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7rem;
+    width: 100%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    z-index: 1000;
+}
+
+.nav-link {
+    white-space: nowrap;
+    color: white;
+}
+
+.btn {
+    margin: .25rem;
+    white-space: nowrap;
+    display: inline-block;
+    padding: 1%;
+}
+
+main {
+    position: relative;
+    padding-top: 7rem;
+    padding-left: 1%;
+    padding-right: 1%;
+    margin-bottom: 7rem;
+}
+
+container {
+    padding-left: 7rem;
+    padding-right: 7rem;
+}
+
+img {
+    position:relative;
+}
+
