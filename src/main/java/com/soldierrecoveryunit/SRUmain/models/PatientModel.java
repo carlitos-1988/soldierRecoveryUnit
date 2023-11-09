@@ -148,8 +148,8 @@ public UserDetails loadUserByUsername(String username) throws UsernameNotFoundEx
         this.assignedCareTaker = assignedCareTaker;
     }
 
-    public List<MedicationModel> getMyMedications() {
-        return myMedications;
+    public ArrayList<MedicationModel> getMyMedications() {
+        return new ArrayList<MedicationModel>(this.myMedications);
     }
 
     public void setMyMedication(MedicationModel myMedication) {

@@ -89,8 +89,22 @@ public class PatientController {
             medicationRepo.save(fetchedMedication);
 
         }
+        return new RedirectView("/myPage");
+    }
 
+    @PostMapping("updatePatient")
+    public RedirectView updatePatient(Principal p, String email, String room,String careTaker, String verified ){
+        boolean confirmed = (verified == "true")?false: Boolean.parseBoolean(verified);
+        System.out.println("email: "+ email + " Room: "+ room + " CareTaker: " + careTaker + " Verified: " + verified + " boolean: "+ confirmed);
 
+        if (p != null && confirmed) {
+            String username = p.getName();
+            PatientModel loggedInUser = patientRepo.findByUsername(username);
+            loggedInUser.setEmail(email);
+            loggedInUser.setRoomAssignment(room);
+            patientRepo.save(loggedInUser);
+
+        }
         return new RedirectView("/myPage");
     }
 }
