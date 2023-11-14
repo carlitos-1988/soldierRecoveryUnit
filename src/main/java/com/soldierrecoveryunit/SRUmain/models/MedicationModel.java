@@ -3,6 +3,8 @@ package com.soldierrecoveryunit.SRUmain.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -113,6 +115,21 @@ public class MedicationModel {
 
     public List<MedicationTrackerModel> getDailyTakenMedication() {
         return this.dailyTakenMedication;
+    }
+
+    public ArrayList<MedicationTrackerModel> getNonTakenMedication(){
+
+        ArrayList<MedicationTrackerModel> medicationNotTaken = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+
+        for(MedicationTrackerModel tracker : this.dailyTakenMedication){
+            long daysDifference = ChronoUnit.DAYS.between(currentDate,tracker.getDateMedicationSet());
+            if(!tracker.isMedicationTaken() && daysDifference > 3){
+                medicationNotTaken.add(tracker);
+            }
+        }
+
+        return medicationNotTaken;
     }
 
     public void setDailyTakenMedication(MedicationTrackerModel takenMedication) {

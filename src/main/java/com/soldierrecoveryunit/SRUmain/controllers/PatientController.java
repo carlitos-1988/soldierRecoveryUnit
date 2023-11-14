@@ -1,8 +1,10 @@
 package com.soldierrecoveryunit.SRUmain.controllers;
 
 import com.soldierrecoveryunit.SRUmain.models.MedicationModel;
+import com.soldierrecoveryunit.SRUmain.models.MedicationTrackerModel;
 import com.soldierrecoveryunit.SRUmain.models.PatientModel;
 import com.soldierrecoveryunit.SRUmain.repos.MedicationRepo;
+import com.soldierrecoveryunit.SRUmain.repos.MedicationTrackerRepo;
 import com.soldierrecoveryunit.SRUmain.repos.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import java.security.Principal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("patient")
@@ -23,6 +26,8 @@ public class PatientController {
     PatientRepo patientRepo;
     @Autowired
     MedicationRepo medicationRepo;
+    @Autowired
+    MedicationTrackerRepo medicationTrackerRepo;
 
     @PostMapping("/addMedication")
     public String addNewMedication(Principal p, String medication, String dosage, String doctor, String quantity, String times, String date){
@@ -89,8 +94,41 @@ public class PatientController {
             medicationRepo.save(fetchedMedication);
 
         }
-
-
         return new RedirectView("/myPage");
+    }
+
+    @PostMapping("updatePatient")
+    public RedirectView updatePatient(Principal p, String email, String room,String careTaker, String verified ){
+        boolean confirmed = (verified == "true")?false: Boolean.parseBoolean(verified);
+        System.out.println("email: "+ email + " Room: "+ room + " CareTaker: " + careTaker + " Verified: " + verified + " boolean: "+ confirmed);
+
+        if (p != null && confirmed) {
+            String username = p.getName();
+            PatientModel loggedInUser = patientRepo.findByUsername(username);
+            loggedInUser.setEmail(email);
+            loggedInUser.setRoomAssignment(room);
+            patientRepo.save(loggedInUser);
+
+        }
+        return new RedirectView("/myPage");
+    }
+
+    @PostMapping("takeMedication")
+    public RedirectView takeMedication(Principal p, String trackerId){
+        LocalDate todaysDate =  LocalDate.now();
+        Long medicationTrackerId = Long.parseLong(trackerId);
+        Optional<MedicationTrackerModel> takenMeds = medicationTrackerRepo.findById(Long.parseLong(trackerId));
+
+        takenMeds.ifPresent(medicationTrackerModel -> {
+            System.out.println(medicationTrackerModel.getMedicationId() + " : tracker ID");
+            medicationTrackerModel.setMedicationTaken(true);
+            System.out.println(medicationTrackerModel.isMedicationTaken());
+            medicationTrackerModel.setDateMedicationTaken(todaysDate);
+            System.out.println(medicationTrackerModel.getDateMedicationSet());
+            medicationTrackerRepo.save(medicationTrackerModel);
+        });
+
+
+        return  new RedirectView("/myPage");
     }
 }

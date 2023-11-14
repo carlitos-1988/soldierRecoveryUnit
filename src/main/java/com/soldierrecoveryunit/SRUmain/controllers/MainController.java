@@ -1,5 +1,6 @@
 package com.soldierrecoveryunit.SRUmain.controllers;
 
+import com.soldierrecoveryunit.SRUmain.dto.iMedicationTrackerDTO;
 import com.soldierrecoveryunit.SRUmain.models.*;
 import com.soldierrecoveryunit.SRUmain.repos.CaretakerRepo;
 import com.soldierrecoveryunit.SRUmain.repos.PatientRepo;
@@ -49,13 +50,23 @@ public class MainController {
             String username = p.getName();
             PatientModel loggedinPatient = patientRepo.findByUsername(username);
             List<MedicationModel> patientMedications = new ArrayList<>(loggedinPatient.getMyMedications());
+            List<iMedicationTrackerDTO> patientTrackers = patientRepo.getAllMedicalTrackerDTO();
 
-            if (loggedinPatient!= null){
+
+            if (loggedinPatient!= null ){
                 m.addAttribute("patientModel", loggedinPatient);
                 m.addAttribute("patientMedications", patientMedications);
+                List<iMedicationTrackerDTO> filteredModels = new ArrayList<>();
+
+                for (iMedicationTrackerDTO tracker: patientTrackers ){
+                    if (loggedinPatient.getPatientId() == tracker.getOwnerId() & tracker.getIsMedicationTaken() == false){
+                        filteredModels.add(tracker);
+                    }
+                }
+                m.addAttribute("myTrackers", filteredModels);
+            }
             }
 
-        }
         return "myPage.html";
     }
 
