@@ -27,7 +27,7 @@ public class MedicationTrackerModel {
     }
 
     public LocalDate getDateMedicationTaken() {
-        return dateMedicationTaken;
+        return this.dateMedicationTaken;
     }
 
     public void setDateMedicationTaken(LocalDate dateMedicationTaken) {
@@ -35,7 +35,15 @@ public class MedicationTrackerModel {
     }
 
     public boolean isMedicationTaken() {
-        return isMedicationTaken;
+        return this.isMedicationTaken;
+    }
+
+    public LocalDate getDateMedicationSet() {
+        return this.dateMedicationSet;
+    }
+
+    public void setDateMedicationSet(LocalDate dateMedicationSet) {
+        this.dateMedicationSet = dateMedicationSet;
     }
 
     public void setMedicationTaken(boolean medicationTaken) {
@@ -43,10 +51,22 @@ public class MedicationTrackerModel {
     }
 
     public MedicationModel getBelongsToMedication() {
-        return belongsToMedication;
+        return this.belongsToMedication;
     }
 
     public void setBelongsToMedication(MedicationModel belongsToMedication) {
         this.belongsToMedication = belongsToMedication;
+    }
+
+    public String getMedicationName() {
+        return this.medicationName;
+    }
+
+    public void setMedicationName(String medicationName) {
+        this.medicationName = medicationName;
+    }
+
+    public Long getMedicationId() {
+        return medicationId;
     }
 }

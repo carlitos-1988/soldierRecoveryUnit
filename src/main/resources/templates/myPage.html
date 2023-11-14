@@ -95,9 +95,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col" style="max-height: 500px; overflow-y: auto;">
 
 <!--                &#45;&#45;&#45;&#45; Daily Medications &#45;&#45;&#45;&#45;-->
+
 
                 <table class="table table-hover">
                     <h3>Daily Medications</h3>
@@ -105,27 +106,23 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Medication Name</th>
-                        <th scope="col">Doctor</th>
+                        <th scope="col">Date For</th>
                         <th scope="col">Mark Taken</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td><button type="button" class="btn btn-dark">Take</button></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td><button type="button" class="btn btn-dark">Take</button></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td><button type="button" class="btn btn-dark">Take</button></td>
+                    <tr th:each="tracker : ${myTrackers}">
+                        <td th:text="${tracker.getTrackerId}"></td>
+                        <td th:text="${tracker.getMedicationName}"></td>
+                        <td th:text="${tracker.getDateTrackerSet}"></td>
+                        <td>
+                            <form action="/patient/takeMedication" method="POST">
+                                <input type="hidden" name="trackerId" th:value="${tracker.getTrackerId}" />
+                                <button type="submit" class="btn btn-primary mark-taken-btn">
+                                    Mark Taken
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

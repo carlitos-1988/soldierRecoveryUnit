@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -69,7 +70,7 @@ public UserDetails loadUserByUsername(String username) throws UsernameNotFoundEx
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -163,6 +164,14 @@ public UserDetails loadUserByUsername(String username) throws UsernameNotFoundEx
         boolean isRemoved = this.myMedications.remove(medicationToRemove);
 
         return isRemoved;
+    }
+
+    public LinkedList<ArrayList<MedicationTrackerModel>> patientReturnsNonTakenMedications(){
+        LinkedList<ArrayList<MedicationTrackerModel>> returnListOfNonTakenMedications = new LinkedList<>();
+        for(MedicationModel medication : this.myMedications){
+            returnListOfNonTakenMedications.add(medication.getNonTakenMedication());
+        }
+        return returnListOfNonTakenMedications;
     }
 
     @Override
