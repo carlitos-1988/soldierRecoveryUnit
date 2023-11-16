@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts :: header}"></head>
+<body>
+<nav th:replace="~{layouts :: navbar}"></nav>
+<di th:replace="~{layouts :: second-navbar}"></di>
+
+<div class="jumbotron">
+    <h1 class="display-4">Checkout Our Local Events</h1>
+    <p class="lead">Signup at your own convenience  </p>
+    <hr class="my-4">
+    <p>Unless otherwise posted the point of contact is Phillys Tharp phone: 555-555-5555</p>
+</div>
+<div class="container">
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Events</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${sruEvents}">
+            <th scope="row">
+                <div class="card text-center">
+                    <div class="card-header" th:text="${event.getOrganizationHostingEvent}">
+                        Featured
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="'Event Name: ' + ${event.getEventName}" ></h5>
+                        <p class="card-text" th:text="'POC: ' + ${event.getOrganizer}" ></p>
+                        <p class="card-text" th:text=" 'Contact Number' + ${event.getContactNumber}" ></p>
+                        <p class="card-text" th:text="'Contact Email: ' + ${event.getContactEmail}" ></p>
+                        <p class="card-text" th:text="${event.getDescription}" ></p>
+                        <a href="#" class="btn btn-success">RSVP to Event</a>
+                    </div>
+                    <div class="card-footer text-muted" th:text="'Event Date:' +  ${event.getDateOfEvent}">
+
+                    </div>
+                </div>
+                <hr>
+            </th>
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+
+
+
+<div th:replace="~{layouts :: scripts}"></div>
+</body>
+</html>

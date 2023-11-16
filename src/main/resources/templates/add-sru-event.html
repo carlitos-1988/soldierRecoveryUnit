@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts :: header}"></head>
+<body>
+<nav th:replace="~{layouts :: navbar}"></nav>
+<di th:replace="~{layouts :: second-navbar}"></di>
+
+
+
+<div class="container">
+    <h1>Create Event</h1>
+    <form th:object="${event}" th:action="@{/sru/saveEvent}" method="post">
+        <form>
+            <div class="form-group">
+                <label >Event Name</label>
+                <input type="text" class="form-control" name="eventName" placeholder="Event Name" >
+            </div>
+            <div class="form-group">
+                <label >Organization Hosting Event</label>
+                <input type="text" class="form-control" name="organization" placeholder="Enter department/organization hosting this event" >
+            </div>
+            <div class="form-group">
+                <label >Description</label>
+                <textarea class="form-control" name="description" rows="3" placeholder="Event Description" ></textarea>
+            </div>
+            <div class="form-group">
+                <label >Date of Event</label>
+                <input type="date" class="form-control" name="dateOfEvent">
+            </div>
+            <div class="form-group">
+                <label >Organizer</label>
+                <input type="text" class="form-control" name="organizer" placeholder="Organizer Name">
+            </div>
+            <div class="form-group">
+                <label >Contact Number</label>
+                <input type="tel" class="form-control" name="contactNumber" placeholder="Contact Number" >
+            </div>
+            <div class="form-group">
+                <label >Contact Email</label>
+                <input type="email" class="form-control" name="contactEmail" placeholder="Contact Email" >
+            </div>
+            <button type="submit" class="btn btn-primary">Save Event</button>
+        </form>
+
+
+    </form>
+</div>
+
+
+
+
+
+
+
+<div th:replace="~{layouts :: scripts}"></div>
+</body>
+</html>
