@@ -30,8 +30,8 @@
                     Patient
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                    <a class="dropdown-item" href="/employees/new">Add Employee</a>
-                    <a class="dropdown-item" href="/employees/show">List Employees</a>
+                    <a class="dropdown-item" href="/myPage">My Page</a>
+                    <a class="dropdown-item" href="/">Log Event</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -39,12 +39,12 @@
                     Care Taker
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                    <a class="dropdown-item" href="/projects/new">Add Project</a>
-                    <a class="dropdown-item" href="/projects/show">List Project</a>
+                    <a class="dropdown-item" href="/">Add Project</a>
+                    <a class="dropdown-item" href="/">List Project</a>
                 </div>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/">SRU Main Page <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/sru/mainPage">SRU Main Page <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
@@ -53,6 +53,31 @@
     </div>
 
 </nav>
+
+<div th:fragment="second-navbar">
+    <ul class="nav justify-content-center inner-bar light-grey-bg">
+        <li class="nav-item">
+            <a class="nav-link" href="/sru/sruEvents"><h4>SRU Events</h4></a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                SRU
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                <a class="dropdown-item" href="/sru/mainPage">SRU Main Page </a>
+                <a class="dropdown-item" href="/sru/sruEvents">SRU Events </a>
+                <a class="dropdown-item" href="/sru/addSruEvent">SRU Add Event </a>
+
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#"><h4>Request a Ride</h4></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/sru/resources"><h4>Resources</h4></a>
+        </li>
+    </ul>
+</div>
 
 <div th:fragment="scripts">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

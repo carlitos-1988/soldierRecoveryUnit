@@ -5,9 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class PatientModel implements UserDetailsService {
@@ -25,15 +23,22 @@ private String email;
 private String username;
 private String password;
 
-@ManyToOne
+@ManyToOne(fetch = FetchType.LAZY)
 @JoinColumn(name="sru_location_id")
 private SRULocationModel assignedSRULocation;
+
+
 @ManyToOne
 @JoinColumn(name = "caretaker_id")
 private CaretakerModel assignedCareTaker;
 
+
 @OneToMany(mappedBy = "patientToMedication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 List<MedicationModel> myMedications;
+
+@ManyToMany(mappedBy = "eventAttendees")
+private Set<EventModel> mySruEvents = new HashSet<>();
+
 
     public PatientModel() {
     }
@@ -50,16 +55,17 @@ List<MedicationModel> myMedications;
     this.email = email;
     this.username = username;
     this.myMedications = new ArrayList<>();
+//    this.myEvents = new HashSet<>();
 
 }
 
-
-
-@Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-}
-
+//    public Set<SruEventModel> getMyEvents() {
+//        return this.myEvents;
+//    }
+//
+//    public void addEvent(SruEventModel event) {
+//        this.myEvents.add(event);
+//    }
 
     public Long getPatientId() {
         return patientId;
@@ -134,7 +140,7 @@ public UserDetails loadUserByUsername(String username) throws UsernameNotFoundEx
     }
 
     public SRULocationModel getAssignedSRULocation() {
-        return assignedSRULocation;
+        return this.assignedSRULocation;
     }
 
     public void setAssignedSRULocation(SRULocationModel assignedSRULocation) {
@@ -190,5 +196,10 @@ public UserDetails loadUserByUsername(String username) throws UsernameNotFoundEx
                 ", assignedCareTaker=" + assignedCareTaker +
                 ", myMedications=" + myMedications +
                 '}';
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

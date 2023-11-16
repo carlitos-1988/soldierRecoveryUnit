@@ -17,9 +17,22 @@ public class SRULocationModel {
     @OneToMany(mappedBy = "assignedSRULocation",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PatientModel> patientToSRU;
 
+    @OneToMany(mappedBy = "belongsToSru", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EventModel> locationEvents;
+
+
+
     public SRULocationModel(String sruName) {
         this.sruName = sruName;
         this.patientToSRU = new ArrayList<>();
+    }
+
+    public Long getSruLocationId() {
+        return this.sruLocationId;
+    }
+
+    public void setSruLocationId(Long sruLocationId) {
+        this.sruLocationId = sruLocationId;
     }
 
     public SRULocationModel() {
@@ -50,5 +63,13 @@ public class SRULocationModel {
     }
     public void setPatientToSRU(PatientModel patientModel){
         this.patientToSRU.add(patientModel);
+    }
+
+    public List<EventModel> getLocationEvents() {
+        return this.locationEvents;
+    }
+
+    public void setNewEvent(EventModel newEvent) {
+        this.locationEvents.add(newEvent);
     }
 }

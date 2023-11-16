@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts :: header}"></head>
+<body>
+<nav th:replace="~{layouts :: navbar}"></nav>
+<di th:replace="~{layouts :: second-navbar}"></di>
+
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the JBLM Soldier Recovery Unit!</h1>
+    <p class="lead">Use this page to find resources and events going on in our unit.</p>
+    <hr class="my-4">
+    <p>random text can change here</p>
+</div>
+
+
+
+<div th:replace="~{layouts :: scripts}"></div>
+</body>
+</html>

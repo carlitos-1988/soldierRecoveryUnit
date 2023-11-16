@@ -25,14 +25,13 @@
             <div class="col">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"> My Contact Information: </li>
-                    <li class="list-group-item" th:text="${patientModel.getFirstName}"></li>
-                    <li class="list-group-item" th:text="${patientModel.getLastName}"></li>
-                    <li class="list-group-item" th:text="${patientModel.getPhoneNumber}"></li>
-                    <li class="list-group-item" th:text="${patientModel.getRoomAssignment}"></li>
-                    <li class="list-group-item" th:text="${patientModel.getEmail}"></li>
-                    <li class="list-group-item" th:text="${patientModel.getUsername}"></li>
+                    <li class="list-group-item" th:text="'Name: ' + ${patientModel.getFirstName} + ' '+ ${patientModel.getLastName} "></li>
+                    <li class="list-group-item" th:text="'Phone Number: ' + ${patientModel.getPhoneNumber}"></li>
+                    <li class="list-group-item" th:text="'Assigned Room: ' + ${patientModel.getRoomAssignment}"></li>
+                    <li class="list-group-item" th:text="'Contact Email: ' + ${patientModel.getEmail}"></li>
+                    <li class="list-group-item" th:text="'Username: ' + ${patientModel.getUsername}"></li>
                     <li class="list-group-item"
-                        th:text="${patientModel.getAssignedCareTaker.getFirstName +  ' ' + patientModel.getAssignedCareTaker.getLastName}">
+                        th:text="'CareTaker: '+ ${patientModel.getAssignedCareTaker.getFirstName +  ' ' + patientModel.getAssignedCareTaker.getLastName}">
                     </li>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal"
