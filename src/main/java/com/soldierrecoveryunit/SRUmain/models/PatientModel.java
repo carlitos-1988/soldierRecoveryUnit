@@ -22,6 +22,7 @@ private MilitaryGrades patientMilitaryGrade;
 private String email;
 private String username;
 private String password;
+private boolean hasProfileImage;
 
 @ManyToOne(fetch = FetchType.LAZY)
 @JoinColumn(name="sru_location_id")
@@ -55,8 +56,7 @@ private Set<EventModel> mySruEvents = new HashSet<>();
     this.email = email;
     this.username = username;
     this.myMedications = new ArrayList<>();
-//    this.myEvents = new HashSet<>();
-
+    this.hasProfileImage = false;
 }
 
 //    public Set<SruEventModel> getMyEvents() {
@@ -178,6 +178,14 @@ private Set<EventModel> mySruEvents = new HashSet<>();
             returnListOfNonTakenMedications.add(medication.getNonTakenMedication());
         }
         return returnListOfNonTakenMedications;
+    }
+
+    public boolean hasProfileImage() {
+        return this.hasProfileImage;
+    }
+
+    public void setHasProfileImage(boolean hasProfileImage) {
+        this.hasProfileImage = hasProfileImage;
     }
 
     @Override

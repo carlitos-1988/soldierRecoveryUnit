@@ -24,8 +24,8 @@ public class DailyMedicationService {
     @Autowired
     MedicationTrackerRepo medicationTrackerRepo;
 
-    //@Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "0 0/30 * * * ?")  //for development only use one above
+    @Scheduled(cron = "0 0 0 * * *")
+    //@Scheduled(cron = "0 0/30 * * * ?")  //for development only use one above
     @Transactional
     public void createDailyMedications(){
 

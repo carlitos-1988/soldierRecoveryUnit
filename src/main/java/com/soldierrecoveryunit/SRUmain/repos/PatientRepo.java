@@ -14,6 +14,8 @@ public interface PatientRepo extends JpaRepository<PatientModel, Long> {
 
     public ArrayList<PatientModel> findAll();
 
+    public PatientModel findByPatientId(Long id);
+
     @Query(nativeQuery = true, value = "SELECT " +
             "    medication_model.medication_id as medicationId, " +
             "    medication_model.times_taken_per_day as timesNeededPerDay, " +

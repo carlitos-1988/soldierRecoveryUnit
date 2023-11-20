@@ -8,15 +8,15 @@
 <main role="main">
     <section class="jumbotron text-center">
         <div class="container">
-
             <h1 class="jumbotron-heading">Name Goes Here </h1>
-            <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&q=80&w=3387&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            <img th:if="${patientModel.hasProfileImage}" th:src="@{/patient/image}" alt="Person Photo" class="img-fluid rounded-circle" width="200px" height="200px">
+            <img th:unless="${patientModel.hasProfileImage}" src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&q=80&w=3387&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                  alt="Person Photo" class="img-fluid rounded-circle" width="200px" height="200px">
             <p>
-                <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+                <a th:href="@{/patient/uploadImage}" class="btn btn-primary">Change Profile Picture</a>
             </p>
         </div>
+
     </section>
 
     <div class="container">

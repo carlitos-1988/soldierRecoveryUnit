@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts :: header}"></head>
+<body>
+<nav th:replace="~{layouts :: navbar}"></nav>
+
+<div class="container mt-5" style="padding-top: 75px; margin-top: 100px;">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h1>Image Upload </h1>
+        </div>
+        <div class="card-body">
+          <form th:action="@{/patient/imageUpload}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="file" class="form-label">Choose an Image:</label>
+              <input type="file" class="form-control" name="file" accept="image/*" id="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
