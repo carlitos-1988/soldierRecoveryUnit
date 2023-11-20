@@ -20,7 +20,8 @@ public class SRULocationModel {
     @OneToMany(mappedBy = "belongsToSru", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EventModel> locationEvents;
 
-
+    @OneToMany(mappedBy = "requestBelongsToSru", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RideRequestModel> ridesRequested;
 
     public SRULocationModel(String sruName) {
         this.sruName = sruName;
@@ -71,5 +72,13 @@ public class SRULocationModel {
 
     public void setNewEvent(EventModel newEvent) {
         this.locationEvents.add(newEvent);
+    }
+
+    public List<RideRequestModel> getRidesRequested() {
+        return this.ridesRequested;
+    }
+
+    public void setRideRequested(RideRequestModel rideRequested) {
+        this.ridesRequested.add(rideRequested);
     }
 }

@@ -24,8 +24,8 @@ public class DailyMedicationService {
     @Autowired
     MedicationTrackerRepo medicationTrackerRepo;
 
-    @Scheduled(cron = "0 0 0 * * *")
-    //@Scheduled(cron = "0 0/30 * * * ?")  for development only use one above
+    //@Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0/30 * * * ?")  //for development only use one above
     @Transactional
     public void createDailyMedications(){
 
@@ -37,13 +37,17 @@ public class DailyMedicationService {
             ArrayList<MedicationModel> patientMedications = patient.getMyMedications();
             for(MedicationModel medication: patientMedications){
                 String newTrackerName = medication.getMedicationName();
-                MedicationTrackerModel dailyMedication = new MedicationTrackerModel(newTrackerName);
+                int i = medication.getTimesTakenPerDay();
 
-                medication.setDailyTakenMedication(dailyMedication);
-                dailyMedication.setBelongsToMedication(medication);
+                for (int j =1; j<i;j++){
+                    MedicationTrackerModel dailyMedication = new MedicationTrackerModel(newTrackerName);
+                    medication.setDailyTakenMedication(dailyMedication);
+                    dailyMedication.setBelongsToMedication(medication);
 
-                medicationTrackerRepo.save(dailyMedication);
-                medicationRepo.save(medication);
+                    medicationTrackerRepo.save(dailyMedication);
+                    medicationRepo.save(medication);
+                }
+
             }
             patientRepo.save(patient);
             System.out.println("MEDICATION TRACKER CREATED ");

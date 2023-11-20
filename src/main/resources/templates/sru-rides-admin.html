@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts :: header}"></head>
+<body>
+<nav th:replace="~{layouts :: navbar}"></nav>
+<di th:replace="~{layouts :: second-navbar}"></di>
+
+<main role="main">
+
+  <table class="table table-hover table-dark">
+    <h3>Ride Requests Statuses</h3>
+    <hr>
+
+    <hr>
+    <thead>
+    <tr>
+      <th scope="col">Date Submitted</th>
+      <th scope="col">Name and Rank</th>
+      <th scope="col">Appointment Date</th>
+      <th scope="col">Appointment Time</th>
+      <th scope="col">Appointment Location</th>
+      <th scope="col">Squad Leader</th>
+      <th scope="col">Squad Leader Phone number</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="request: ${sruRides}" >
+      <td th:text="${request.getDateSubmitted}"></td>
+      <td th:text="${request.getFullName}"></td>
+      <td th:text="${request.getDateOfAppointment}"></td>
+      <td th:text="${request.getAppointmentTime}"></td>
+      <td th:text="${request.getLocation}"></td>
+      <td th:text="${request.getSquadLeader}"></td>
+      <td th:text="${request.getSquadLeaderPhoneNumber}"></td>
+      <td th:text="${request.getStatus}"></td>
+      <td>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" th:attr="data-id=${request.getRequestId}" onclick="updateRideRequestModal(this)">
+            Take Action
+          </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+<!--Ride Request Update Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form th:action="@{/sru/updateRideRequest}" method="POST">
+
+          <div class="form-group">
+            <label >Approver</label>
+            <input type="text" class="form-control" name="approverName" placeholder="Enter Approver Name">
+          </div>
+          <div class="form-group">
+            <label >Select New Status</label>
+            <select class="form-control" name="newStatus">
+              <option>PENDING</option>
+              <option>APPROVED</option>
+              <option>DENIED</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Comments</label>
+            <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+          <input type="hidden" name="rideRequestId" id="rideUpdateId" />
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+</main>
+<div th:replace="~{layouts :: scripts}"></div>
+<script>
+function updateRideRequestModal(button) {
+    var id = button.getAttribute('data-id');
+    console.log(id + ' : this is the value of the id');
+    document.getElementById('rideUpdateId').value = id;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head th:replace="~{layouts :: header}"></head>
+<body>
+<nav th:replace="~{layouts :: navbar}"></nav>
+<di th:replace="~{layouts :: second-navbar}"></di>
+
+<div class="jumbotron">
+  <h1 class="display-4">Request A Ride </h1>
+  <p class="lead">Use this tool to request a ride from the SRU Driver </p>
+  <h5>Basic Rules</h5>
+  <ul>
+    <li>All Rides must be requested with a 48-24 hour notice</li>
+    <li>Exception to this policy are at the discretion of the duty Driver and are not guaranteed</li>
+    <li>Rides will be executed at a first come, first served basis</li>
+    <li>Driver is only available during the duty hours of 0800-1500, extenuating circumstances will be made</li>
+    <li>Monday appointments must be requested NLT COB on Fridays</li>
+    <li>PX Runs will be available every Wednesday from 1200-1500 only</li>
+    <li>No PX runs after 1500</li>
+    <li>After 1500 utilize shuttle on post</li>
+  </ul>
+  <hr class="my-4">
+  <p>Unless otherwise posted the point of contact is John Doe, phone: 555-555-5555</p>
+</div>
+
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Hide/Show Form
+        </button>
+      </h5>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+  <div class="card-body">
+
+<h1>Create Request</h1>
+  <form th:action="@{/sru/saveRequestRide}" method="post">
+    <div class="form-group" >
+      <label >Name with Rank</label>
+      <input type="text" class="form-control" name="fullName" placeholder="SSH Snuffy Rafael" >
+    </div>
+    <div class="form-group">
+      <label >Phone Number</label>
+      <input type="text" class="form-control" name="phoneNumber" placeholder="Phone Number" >
+    </div>
+    <div class="form-group">
+      <label >Contact Email</label>
+      <input type="email" class="form-control" name="contactEmail" placeholder="Contact Email" >
+    </div>
+    <div class="form-group">
+      <label >Appointment Date </label>
+      <input type="date" class="form-control" name="dateOfAppointment">
+    </div>
+    <div class="form-group">
+      <label >Appointment Time</label>
+      <input class="form-control" name="appointmentTime" placeholder="enter in military time" ></input>
+    </div>
+    <div class="form-group">
+      <label >Location</label>
+      <textarea class="form-control" name="location" rows="3" placeholder="Where do you need to be taken" ></textarea>
+    </div>
+    <div class="form-group">
+      <label >Squad Leader</label>
+      <input type="text" class="form-control" name="squadLeader" placeholder="Squad Leader's Name">
+    </div>
+    <div class="form-group">
+      <label >Squad Leader Phone Number</label>
+      <input type="tel" class="form-control" name="squadLeaderPhoneNumber" placeholder="Squad Leader's Phone Number" >
+    </div>
+    <button type="submit" class="btn btn-primary">Request Ride</button>
+  </form>
+
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <table class="table table-hover table-dark">
+    <h3>Ride Requests Statuses</h3>
+    <hr>
+
+    <hr>
+    <thead>
+    <tr>
+      <th scope="col">Date Submitted</th>
+      <th scope="col">Name and Rank</th>
+      <th scope="col">Appointment Date</th>
+      <th scope="col">Appointment Time</th>
+      <th scope="col">Appointment Location</th>
+      <th scope="col">Squad Leader</th>
+      <th scope="col">Squad Leader Phone number</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="request: ${sruRides}" data-medication-id="${medication.getMedicationId}">
+      <td th:text="${request.getDateSubmitted}"></td>
+      <td th:text="${request.getFullName}"></td>
+      <td th:text="${request.getDateOfAppointment}"></td>
+      <td th:text="${request.getAppointmentTime}"></td>
+      <td th:text="${request.getLocation}"></td>
+      <td th:text="${request.getSquadLeader}"></td>
+      <td th:text="${request.getSquadLeaderPhoneNumber}"></td>
+      <td th:text="${request.getStatus}"></td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+<div th:replace="~{layouts :: scripts}"></div>
+</body>
+</html>

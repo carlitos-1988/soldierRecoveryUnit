@@ -56,9 +56,7 @@
 
 <div th:fragment="second-navbar">
     <ul class="nav justify-content-center inner-bar light-grey-bg">
-        <li class="nav-item">
-            <a class="nav-link" href="/sru/sruEvents"><h4>SRU Events</h4></a>
-        </li>
+
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 SRU
@@ -67,11 +65,15 @@
                 <a class="dropdown-item" href="/sru/mainPage">SRU Main Page </a>
                 <a class="dropdown-item" href="/sru/sruEvents">SRU Events </a>
                 <a class="dropdown-item" href="/sru/addSruEvent">SRU Add Event </a>
+                <a class="dropdown-item" href="/sru/rideAdmin">Ride Admin Page </a>
 
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#"><h4>Request a Ride</h4></a>
+            <a class="nav-link" href="/sru/sruEvents"><h4>SRU Events</h4></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/sru/rideRequest"><h4>Request a Ride</h4></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/sru/resources"><h4>Resources</h4></a>
