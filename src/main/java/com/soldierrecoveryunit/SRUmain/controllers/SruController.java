@@ -1,22 +1,25 @@
 package com.soldierrecoveryunit.SRUmain.controllers;
 
 
-import com.soldierrecoveryunit.SRUmain.models.EventModel;
-import com.soldierrecoveryunit.SRUmain.models.PatientModel;
-import com.soldierrecoveryunit.SRUmain.models.RideRequestModel;
-import com.soldierrecoveryunit.SRUmain.models.SRULocationModel;
-import com.soldierrecoveryunit.SRUmain.repos.EventRepo;
-import com.soldierrecoveryunit.SRUmain.repos.PatientRepo;
-import com.soldierrecoveryunit.SRUmain.repos.RideRequestRepo;
-import com.soldierrecoveryunit.SRUmain.repos.SRULocationRepo;
+import com.soldierrecoveryunit.SRUmain.Config.ImageUploadService;
+import com.soldierrecoveryunit.SRUmain.models.*;
+import com.soldierrecoveryunit.SRUmain.repos.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,9 +36,12 @@ public class SruController {
     SRULocationRepo sruLocationRepo;
     @Autowired
     EventRepo eventRepo;
-
+    @Autowired
+    ImageRepo imageRepo;
     @Autowired
     RideRequestRepo rideRequestRepo;
+    @Autowired
+    ImageUploadService imageUploadService;
 
 
     @GetMapping("/mainPage")
@@ -59,9 +65,10 @@ public class SruController {
             m.addAttribute("sruEvents", sruEvents);
         }
 
-
         return "sru-events-page.html";
     }
+
+
 
     @GetMapping("rideRequest")
     public String requestRide(Principal p, Model m) {
@@ -125,7 +132,7 @@ public class SruController {
     }
 
     @PostMapping("/saveEvent")
-    public RedirectView saveEvent(Principal p, String eventName, String description, LocalDate dateOfEvent, String organizer, String contactNumber, String contactEmail, String organization) {
+    public RedirectView saveEvent(Principal p, String eventName, String description, LocalDate dateOfEvent, String organizer, String contactNumber, String contactEmail, String organization, @RequestParam("file")MultipartFile file) throws IOException {
 
         if (p != null) {
             //System.out.println(eventName + " " + description + " " + dateOfEvent + " " + organizer + " " + contactNumber + " " + contactEmail);
@@ -135,17 +142,20 @@ public class SruController {
 
             EventModel newEvent = new EventModel(eventName, description, dateOfEvent, organizer, contactNumber, contactEmail, organization);
             newEvent.setBelongsToSru(loggedinPatient.getAssignedSRULocation());
+            newEvent.setHasImage(true);
 
             SRULocationModel saveToSru = loggedinPatient.getAssignedSRULocation();
             saveToSru.setNewEvent(newEvent);
 
             eventRepo.save(newEvent);
             sruLocationRepo.save(saveToSru);
-            System.out.println("able to create a new event");
+
+            imageUploadService.uploadSruEventImage(file,newEvent);
 
         }
         return new RedirectView("/sru/sruEvents");
     }
+
 
     @PostMapping("/saveRequestRide")
     public RedirectView saveRideRequest(Principal p, Model m, String fullName, String phoneNumber, String contactEmail, LocalDate dateOfAppointment, String location, String squadLeader, String squadLeaderPhoneNumber, String appointmentTime) {
@@ -185,12 +195,30 @@ public class SruController {
                 rideRequestRepo.save(rideRequestModel);
             });
 
-
-
-
         }
-
         return new RedirectView("/sru/rideAdmin");
+    }
 
+
+    @GetMapping("image")
+    @Transactional
+    public ResponseEntity<byte[]> getEventImage(@RequestParam Long eventId) {
+        try {
+            Optional<EventModel> eventModelOptional = eventRepo.findById(eventId);
+            if (eventModelOptional.isPresent()) {
+                EventModel event = eventModelOptional.get();
+                ImageModel image = event.getEventImage(); // Assuming eventModel has a reference to image directly
+
+                if (image != null) {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.IMAGE_JPEG); // Set the appropriate content type
+                    return new ResponseEntity<>(image.getImageBytes(), headers, HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

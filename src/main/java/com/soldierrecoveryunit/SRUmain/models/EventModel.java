@@ -20,6 +20,7 @@ public class EventModel {
     private String organizationHostingEvent;
     private String contactNumber;
     private String contactEmail;
+    private boolean hasImage = false;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,8 +35,13 @@ public class EventModel {
     )
     private Set<PatientModel> eventAttendees = new HashSet<>();
 
+    @OneToOne(mappedBy = "eventModel", cascade = CascadeType.ALL)
+    private ImageModel eventImage;
+
     public EventModel() {
     }
+
+
 
     public EventModel(String eventName, String description, LocalDate dateOfEvent, String organizer, String contactNumber, String contactEmail, String organizationHostingEvent) {
         this.eventName = eventName;
@@ -123,4 +129,22 @@ public class EventModel {
     public void setOrganizationHostingEvent(String organizationHostingEvent) {
         this.organizationHostingEvent = organizationHostingEvent;
     }
+
+    public ImageModel getEventImage() {
+        return this.eventImage;
+    }
+
+    public void setEventImage(ImageModel eventImage) {
+        this.eventImage = eventImage;
+    }
+
+    public boolean hasImage() {
+        return this.hasImage;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+
 }
