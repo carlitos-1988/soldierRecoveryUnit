@@ -1,21 +1,35 @@
 package com.soldierrecoveryunit.SRUmain.controllers;
 
+import com.soldierrecoveryunit.SRUmain.Config.ImageUploadService;
+import com.soldierrecoveryunit.SRUmain.models.ImageModel;
 import com.soldierrecoveryunit.SRUmain.models.MedicationModel;
 import com.soldierrecoveryunit.SRUmain.models.MedicationTrackerModel;
 import com.soldierrecoveryunit.SRUmain.models.PatientModel;
+import com.soldierrecoveryunit.SRUmain.repos.ImageRepo;
 import com.soldierrecoveryunit.SRUmain.repos.MedicationRepo;
 import com.soldierrecoveryunit.SRUmain.repos.MedicationTrackerRepo;
 import com.soldierrecoveryunit.SRUmain.repos.PatientRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
@@ -28,6 +42,21 @@ public class PatientController {
     MedicationRepo medicationRepo;
     @Autowired
     MedicationTrackerRepo medicationTrackerRepo;
+    @Autowired
+    ImageUploadService imageUploadService;
+    @Autowired
+    ImageRepo imageRepo;
+
+
+
+    @GetMapping("/uploadImage")
+    public String showUploadForm(Model model, Principal p) {
+        String userName = p.getName();
+        PatientModel patientModel = patientRepo.findByUsername(userName);
+        model.addAttribute("userId", patientModel.getPatientId());
+
+        return "uploadForm.html";
+    }
 
     @PostMapping("/addMedication")
     public String addNewMedication(Principal p, String medication, String dosage, String doctor, String quantity, String times, String date){
@@ -130,5 +159,45 @@ public class PatientController {
 
 
         return  new RedirectView("/myPage");
+    }
+
+    @PostMapping("imageUpload")
+    public RedirectView uploadImage(@RequestParam("file")MultipartFile file,Principal p){
+        String userName = p.getName();
+        PatientModel patientModel = patientRepo.findByUsername(userName);
+        try{
+            patientModel.setHasProfileImage(true);
+            imageUploadService.uploadProfileImage(file,p);
+            return new RedirectView("/myPage");
+
+        }catch (IOException e){
+            return new RedirectView("/myPage");
+        }
+
+    }
+
+    @GetMapping("image")
+    @Transactional
+    public ResponseEntity<byte[]> getUserImage(Principal p){
+
+        String username = p.getName();
+
+        try{
+            PatientModel loggedInPatient = patientRepo.findByUsername(username);
+            if(loggedInPatient != null){
+                ArrayList<Optional> imageOptional = imageRepo.findByPatientModel(loggedInPatient);
+                if (!imageOptional.isEmpty()){
+                    ImageModel image = (ImageModel) imageOptional.get(0).get();
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.IMAGE_JPEG); // Set the appropriate content type
+                    return new ResponseEntity<>(image.getImageBytes(), headers, HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }

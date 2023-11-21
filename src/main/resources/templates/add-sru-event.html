@@ -10,7 +10,7 @@
 
 <div class="container">
     <h1>Create Event</h1>
-    <form th:object="${event}" th:action="@{/sru/saveEvent}" method="post">
+    <form th:object="${event}" th:action="@{/sru/saveEvent}" method="post" enctype="multipart/form-data">
         <form>
             <div class="form-group">
                 <label >Event Name</label>
@@ -39,6 +39,26 @@
             <div class="form-group">
                 <label >Contact Email</label>
                 <input type="email" class="form-control" name="contactEmail" placeholder="Contact Email" >
+            </div>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h1>Event Image Upload </h1>
+                            </div>
+                            <div class="card-body">
+<!--                                <form th:action="@{/sru/imageUpload}" method="post" enctype="multipart/form-data">-->
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Choose an Image:</label>
+                                        <input type="file" class="form-control" name="file" accept="image/*" id="file" required>
+                                    </div>
+<!--                                    <button type="submit" class="btn btn-primary">Upload</button>-->
+<!--                                </form>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Save Event</button>
         </form>

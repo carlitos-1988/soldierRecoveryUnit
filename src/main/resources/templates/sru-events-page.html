@@ -27,6 +27,11 @@
                     <div class="card-header" th:text="${event.getOrganizationHostingEvent}">
                         Featured
                     </div>
+                    <div>
+                        <img th:if="${event.hasImage}" th:src="@{/sru/image(eventId=${event.getEventId})}" alt="Person Photo" class="img-fluid" width="400px" height="200px">
+                        <img th:unless="${event.hasImage}" src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&q=80&w=3387&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                             alt="Person Photo" class="img-fluid rounded-circle" width="200px" height="200px">
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="'Event Name: ' + ${event.getEventName}" ></h5>
                         <p class="card-text" th:text="'POC: ' + ${event.getOrganizer}" ></p>
