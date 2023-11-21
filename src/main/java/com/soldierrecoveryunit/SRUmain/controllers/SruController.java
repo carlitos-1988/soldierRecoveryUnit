@@ -25,6 +25,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("sru")
@@ -55,6 +57,7 @@ public class SruController {
     }
 
     @GetMapping("/sruEvents")
+    @Transactional
     public String getSruEvents(Principal p, Model m) {
 
         if (p != null) {
@@ -62,6 +65,9 @@ public class SruController {
             PatientModel loggedinPatient = patientRepo.findByUsername(username);
             List<EventModel> sruEvents = new ArrayList<>(eventRepo.findAll());
 
+            Set<Long> rsvpEventIds = loggedinPatient.getMySruEvents().stream().map(EventModel :: getEventId).collect(Collectors.toSet());
+
+            m.addAttribute("rsvpEventIds", rsvpEventIds);
             m.addAttribute("sruEvents", sruEvents);
         }
 
@@ -197,6 +203,26 @@ public class SruController {
 
         }
         return new RedirectView("/sru/rideAdmin");
+    }
+
+    @PostMapping("/addRsvpEvent")
+    @Transactional
+    public RedirectView addEventToMyEvents(Principal p, String eventId){
+
+        if(p != null){
+            String username = p.getName();
+            PatientModel loggedInUser = patientRepo.findByUsername(username);
+            Optional<EventModel> selectedEvent = eventRepo.findById(Long.parseLong(eventId));
+
+            selectedEvent.ifPresent(eventModel -> {
+                loggedInUser.addEvent(eventModel);
+                eventModel.setEventAttendee(loggedInUser);
+
+                patientRepo.save(loggedInUser);
+                eventRepo.save(eventModel);
+            });
+        }
+        return new RedirectView("/sru/sruEvents");
     }
 
 

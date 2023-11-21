@@ -188,6 +188,14 @@ private Set<EventModel> mySruEvents = new HashSet<>();
         this.hasProfileImage = hasProfileImage;
     }
 
+    public Set<EventModel> getMySruEvents() {
+        return mySruEvents;
+    }
+
+    public void addEvent(EventModel sruEvent) {
+        this.mySruEvents.add(sruEvent);
+    }
+
     @Override
     public String toString() {
         return "PatientModel{" +
