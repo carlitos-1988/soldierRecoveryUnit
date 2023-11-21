@@ -66,8 +66,8 @@ public class EventModel {
         return this.eventAttendees;
     }
 
-    public void setEventAttendees(PatientModel eventAttendees) {
-        this.eventAttendees.add(eventAttendees);
+    public void setEventAttendee(PatientModel eventAttendee) {
+        this.eventAttendees.add(eventAttendee);
     }
 
     public String getEventName() {

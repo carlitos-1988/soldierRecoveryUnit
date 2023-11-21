@@ -38,7 +38,14 @@
                         <p class="card-text" th:text=" 'Contact Number' + ${event.getContactNumber}" ></p>
                         <p class="card-text" th:text="'Contact Email: ' + ${event.getContactEmail}" ></p>
                         <p class="card-text" th:text="${event.getDescription}" ></p>
-                        <a href="#" class="btn btn-success">RSVP to Event</a>
+
+                        <form th:action="@{/sru/addRsvpEvent}" method="POST">
+                            <input type="hidden" th:value="${event.getEventId}" name="eventId">
+                            <button type="submit" name="rsvp" class="btn btn-primary"
+                                    th:disabled="${#sets.contains(rsvpEventIds, event.getEventId)}"
+                            >RSVP
+                            </button>
+                        </form>
                     </div>
                     <div class="card-footer text-muted" th:text="'Event Date:' +  ${event.getDateOfEvent}">
 

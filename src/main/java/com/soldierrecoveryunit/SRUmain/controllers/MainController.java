@@ -8,6 +8,7 @@ import com.soldierrecoveryunit.SRUmain.repos.SRULocationRepo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -45,6 +49,7 @@ public class MainController {
     }
 
     @GetMapping("/myPage")
+    @Transactional
     String getMyPage(Principal p, Model m ){
         if (p != null){
             String username = p.getName();
@@ -64,6 +69,12 @@ public class MainController {
                     }
                 }
                 m.addAttribute("myTrackers", filteredModels);
+
+                Set<EventModel> myRsvpEvents = loggedinPatient.getMySruEvents();
+                List<EventModel> sortedEvents = myRsvpEvents.stream()
+                        .sorted(Comparator.comparing(EventModel :: getDateOfEvent))
+                        .collect(Collectors.toList());
+                m.addAttribute("rsvpEvents",sortedEvents);
             }
             }
 
