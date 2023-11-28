@@ -1,6 +1,8 @@
 package com.soldierrecoveryunit.SRUmain.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,10 +24,12 @@ private MilitaryGrades patientMilitaryGrade;
 private String email;
 private String username;
 private String password;
+private boolean isDriver;
 private boolean hasProfileImage;
 
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name="sru_location_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sru_location_id", referencedColumnName = "sruLocationId")
+    @Fetch(FetchMode.JOIN) // Explicitly set the fetching strategy
 private SRULocationModel assignedSRULocation;
 
 
@@ -58,14 +62,6 @@ private Set<EventModel> mySruEvents = new HashSet<>();
     this.myMedications = new ArrayList<>();
     this.hasProfileImage = false;
 }
-
-//    public Set<SruEventModel> getMyEvents() {
-//        return this.myEvents;
-//    }
-//
-//    public void addEvent(SruEventModel event) {
-//        this.myEvents.add(event);
-//    }
 
     public Long getPatientId() {
         return patientId;
@@ -194,6 +190,14 @@ private Set<EventModel> mySruEvents = new HashSet<>();
 
     public void addEvent(EventModel sruEvent) {
         this.mySruEvents.add(sruEvent);
+    }
+
+    public boolean isDriver() {
+        return this.isDriver;
+    }
+
+    public void setDriver(boolean driver) {
+        this.isDriver = driver;
     }
 
     @Override

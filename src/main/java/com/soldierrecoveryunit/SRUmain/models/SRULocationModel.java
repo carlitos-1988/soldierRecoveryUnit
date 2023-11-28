@@ -10,7 +10,7 @@ public class SRULocationModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long sruLocationId;
+    private Long sruLocationId;
     private String sruName;
     private String mailingAddress;
 
@@ -23,20 +23,18 @@ public class SRULocationModel {
     @OneToMany(mappedBy = "requestBelongsToSru", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RideRequestModel> ridesRequested;
 
+    public SRULocationModel() {
+    }
+
     public SRULocationModel(String sruName) {
         this.sruName = sruName;
         this.patientToSRU = new ArrayList<>();
+        this.locationEvents = new ArrayList<>();
+        this.ridesRequested = new ArrayList<>();
     }
 
     public Long getSruLocationId() {
         return this.sruLocationId;
-    }
-
-    public void setSruLocationId(Long sruLocationId) {
-        this.sruLocationId = sruLocationId;
-    }
-
-    public SRULocationModel() {
     }
 
     public String getSruName() {

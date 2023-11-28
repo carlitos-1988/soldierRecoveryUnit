@@ -91,6 +91,11 @@ public class MainController {
         return "signup.html";
     }
 
+    @GetMapping("/medSignup")
+    public String careTakerSignup(){
+        return "caretaker-signup.html";
+    }
+
     @GetMapping("/logout")
     public RedirectView logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -129,6 +134,12 @@ public class MainController {
 
 
         authWithHttpServletRequest(username, password);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/caretakerSignup")
+    public String signupCareTaker(){
 
         return "redirect:/";
     }

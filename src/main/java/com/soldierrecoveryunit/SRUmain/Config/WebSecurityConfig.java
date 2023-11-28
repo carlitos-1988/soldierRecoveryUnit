@@ -42,6 +42,7 @@ public class WebSecurityConfig extends AbstractSecurityWebApplicationInitializer
                 .authorizeHttpRequests((auth) -> auth
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/signup").permitAll()
+                                .requestMatchers("/medSignup").permitAll()
                                 .requestMatchers("/css/styles.css").permitAll()
                                 .requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/signup").permitAll()
